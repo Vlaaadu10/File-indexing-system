@@ -1,0 +1,44 @@
+# **Simplified system of file indexing**
+314CA Stefan Alexandru Vladut
+
+## Introduction and Structure
+The system is organised in 4 crucial parts: *declarations*, *utils*, *operations* and *main*. Each of these plays an important rule in maintaining the functionality and smooth-operation of it. Main as the name says its the central part, the kernel of the system where the commands are interpreted and diverted to the their assigned function. I would also like too add that this system is well-built in order to avoid data leakage or interruption which can cause significant damage and mess in ones computer, which may lead to sever problems especially from "classified documents" in big institutions.
+
+As you may see, the project is organized in multiple .c files and headers(.h) to make it well structured and easy to follow. Each header contains structure declarations and function calls that are going to be used in the corresponding .c file. I wanted to make that declarations in advance where possible to avoid circular dependencies. In addition to this, you may see that operations are located in a specific .c file in order to be centralised and easy to be accesed even for anyone seeing the code for the first time.
+
+Notwithstanding the importance of headers I also used in .c files some useful functions from the laboratory or directly from course presentations of SDA course in order to help me save lines(DIE and MIN). DIE is used not only for design choices to have an interactive interface, but also to prevent memory leaks which can be crucial.
+
+## P.S:
+In the case of non-existent files, keys already been associated or successful operations, a message will be displayed in the output file, which maintains an interactive interface.
+
+`1. declarations.h`
+-   Declarations and definition of essential functions from laboratory for:
+ -        doubly linked list
+ -        trie
+ -        heap
+-   Trie is used for storing the keywords in arborescent structure with references at the last node to files that contains those words
+-   Heap is used in order to determine the most relevant k files based on a search by a specific keyword
+-   Dll is the cornerstone of the system implementation, ensuring flexibility between data and making it possible to store it in a form that suits our needs
+
+`2. utils.c/.h`
+-   Defining the essential functions from lab/course of SDA used for the 3 data structures used in this project(*dll, trie, heap*)
+-   Have free functions for dll, trie and heap in order to avoid memory leaks and make things look clean and safe
+
+`3. operations.c/.h`
+-   Defining and building the 8 available operations in the system   
+-       add -> add a new file to the system
+-       del -> delete an existent file from the system
+-       addkw -> add a new keyword to an existent file
+-       delkw -> delete a keyword from an existent file
+-       find -> search for all files that contains a specific keywords
+-       topk -> print the most k relevant files that contains a specific keyword
+-       print -> print all keywords from the trie in alphabetical order
+-       prefix -> print all files that contains at least one keyword that starts with a specific prefix
+-   I respected the requirement that the operations prefix and print must use trie so I implemented a DFS traversing algorithm specifically modified for each case 
+-   to be of help I defined some useful functions as *file_has_key, get_file, file_add/remove_key* in order to avoid writing multiple useless code not only to make my work easier, but also for those reading the implementation.
+
+`4. main.c`
+-   Main function is undoubtedly the brain of the system and the place where all actions take place
+-   Here each command is interpreted and depending on the chosen operation, the assigned function is called.
+-   Furthermore, at the end of the programm you can see the free functions for each structure used and also I closed the in and out files to prevent data leakage.
+-   Finally, main ensures the correct management of operations and the handling of malloc fails, but also serves as the basis of this setup
